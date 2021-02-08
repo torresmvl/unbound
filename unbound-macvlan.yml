@@ -7,7 +7,6 @@ services:
       dockerfile: Dockerfile
     image: ghcr.io/torresmvl/unbound
     networks:
-      - traefik_proxy
       - mars_vlan
     ports:
       - published: 53
@@ -30,8 +29,6 @@ services:
         constraints: [node.hostname == mars]
 
 networks:
-  traefik_proxy:
-    external: true
   mars_vlan:
     external: true
 # https://github.com/sarunas-zilinskas/docker-compose-macvlan/blob/master/docker-compose.yml
