@@ -1,0 +1,23 @@
+---
+version: "3.7"
+services:
+  unbound:
+    container_name: unbound
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: unbound
+    ports:
+      - published: 5335
+        target: 5335
+        protocol: tcp
+        mode: host
+      - published: 5335
+        target: 5335
+        protocol: udp
+        mode: host
+    healthcheck:
+      test: ["CMD", "dig", "nasa.gov", "@127.0.0.1", "-p", "5335"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
