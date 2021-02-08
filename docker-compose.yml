@@ -6,14 +6,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: unbound
+    image: ghcr.io/torresmvl/unbound
     ports:
-      - published: 5335
-        target: 5335
+      - published: 5336
+        target: 5336
         protocol: tcp
         mode: host
-      - published: 5335
-        target: 5335
+      - published: 5336
+        target: 5336
         protocol: udp
         mode: host
     healthcheck:
