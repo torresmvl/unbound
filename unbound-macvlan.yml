@@ -1,0 +1,58 @@
+---
+version: "3.7"
+services:
+  unbound:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/torresmvl/unbound
+    networks:
+      - traefik_proxy
+      - mars_vlan
+    ports:
+      - published: 53
+        target: 53
+        protocol: tcp
+        mode: host
+      - published: 53
+        target: 53
+        protocol: udp
+        mode: host
+    healthcheck:
+      test: ["CMD", "dig", "nasa.gov", "@127.0.0.1"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == mars]
+
+networks:
+  traefik_proxy:
+    external: true
+  mars_vlan:
+    external: true
+# https://github.com/sarunas-zilinskas/docker-compose-macvlan/blob/master/docker-compose.yml
+# networks:
+#   dockervlan:
+#     #This interface should be defined as using null driver. Do not remove it.
+#     driver: null
+#     driver_opts:
+#       parent: eth0
+#     ipam:
+#       config:
+#         - subnet: "192.168.0.0/24"
+#           ip_range: "192.168.0.64/26"
+#           gateway: "192.168.0.1"
+#   dockervlan:
+#     #This is the interface which is used for containers networking
+#     driver: macvlan
+#     driver_opts:
+#       parent: eth0
+#     ipam:
+#       config:
+#         - subnet: "192.168.0.0/24"
+#           ip_range: "192.168.0.64/26"
+#           gateway: "192.168.0.1"
