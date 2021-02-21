@@ -3,7 +3,7 @@ FROM alpine:edge as base
 RUN \
     apk add --update --no-cache --virtual .unbound-deps \
     unbound \
-    bind-tools \
+    drill \
     openssl \
     tini
 

@@ -9,15 +9,18 @@ services:
     image: ghcr.io/torresmvl/unbound
     ports:
       - published: 5335
-        target: 5335
+        target: 53
         protocol: tcp
-        mode: host
+        mode: ingress
       - published: 5335
-        target: 5335
+        target: 53
         protocol: udp
-        mode: host
+        mode: ingress
+    # volumes:
+    #   - //apps/swarm/pihole/unbound/log/unbound.log:/var/log/unbound/unbound.log:rw
+    restart: always
     healthcheck:
-      test: ["CMD", "dig", "nasa.gov", "@127.0.0.1", "-p", "5335"]
+      test: ["CMD", "drill", "nasa.gov", "@127.0.0.1"]
       interval: 1s
       timeout: 3s
       retries: 30
