@@ -15,10 +15,12 @@ RUN \
     chown unbound:unbound /var/log/unbound/unbound.log && \
     ln -sf /dev/stdout /var/log/unbound/unbound.log 
 
-COPY config/pi-hole.conf /etc/unbound/unbound.conf
+COPY config/unbound.conf /etc/unbound/unbound.conf
 RUN unbound-anchor && \
     unbound-checkconf && \
     chown unbound:unbound /usr/share/dnssec-root/trusted-key.key
 
+FROM scratch as release
+COPY --from=base / /
 ENTRYPOINT [ "/sbin/tini", "--" ]
 CMD ["unbound"]

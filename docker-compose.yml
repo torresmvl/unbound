@@ -1,26 +1,22 @@
 ---
-version: "3.7"
+version: '3.8'
 services:
   unbound:
-    container_name: unbound
     build:
       context: .
-      dockerfile: Dockerfile
-    image: ghcr.io/torresmvl/unbound
+    image: ghcr.io/torresmvl/unbound:latest
     ports:
-      - published: 5335
+      - published: 53
         target: 53
         protocol: tcp
-        mode: ingress
-      - published: 5335
+        mode: host
+      - published: 53
         target: 53
         protocol: udp
-        mode: ingress
-    # volumes:
-    #   - //apps/swarm/pihole/unbound/log/unbound.log:/var/log/unbound/unbound.log:rw
+        mode: host
     restart: always
     healthcheck:
-      test: ["CMD", "drill", "nasa.gov", "@127.0.0.1"]
+      test: ['CMD', 'drill', 'nasa.gov', '@127.0.0.1']
       interval: 1s
       timeout: 3s
       retries: 30
