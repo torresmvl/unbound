@@ -3,7 +3,7 @@ name: docker buildX build
 on:
   push:
     branches:
-      - 'master'
+      - 'dev'
 
 jobs:
   docker:
